@@ -37,11 +37,16 @@ return {
     -- true
     analyze_open_documents_only = false,
 
+    -- Path to OmniSharp.dll
+    -- dll_path = "/Users/ngkaokis/.local/share/nvim/mason/packages/omnisharp/OmniSharp.dll",
+
+
     filetypes = { 'cs', 'vb' },
     root_dir = function(fname)
-      return util.root_pattern '*.sln'(fname) or util.root_pattern '*.csproj'(fname)
+      return util.root_pattern '*.sln' (fname) or util.root_pattern '*.csproj' (fname)
     end,
     on_new_config = function(new_config, new_root_dir)
+      new_config.cmd = { 'omnisharp' }
       table.insert(new_config.cmd, '-z') -- https://github.com/OmniSharp/omnisharp-vscode/pull/4300
       vim.list_extend(new_config.cmd, { '-s', new_root_dir })
       vim.list_extend(new_config.cmd, { '--hostPID', tostring(vim.fn.getpid()) })
@@ -133,7 +138,7 @@ require'lspconfig'.omnisharp.setup {
     analyze_open_documents_only = false,
 }
 ```
-]],
+]]   ,
     default_config = {
       root_dir = [[root_pattern(".sln") or root_pattern(".csproj")]],
     },
